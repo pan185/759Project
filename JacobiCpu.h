@@ -10,6 +10,6 @@ public:
 	JacobiCpu(int dimension) :BasicSolver(dimension) {};
 	void freeAllMemory();
 	void solve(double eps);
-	void input(std::string rFile);
+	void input(std::string rFile, bool generate_random);
 };
 #endif

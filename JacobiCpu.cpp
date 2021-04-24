@@ -93,47 +93,54 @@ void JacobiCpu::solve(double eps) {
 
 }
 
-void JacobiCpu::input(string wfile) {
-	int n = this->size;
-	ofstream fout(wfile);
+void JacobiCpu::input(string wfile, bool generate) {
+	if (generate) {
+		int n = this->size;
+		ofstream fout(wfile);
 
-	std::random_device rd;
-    std::mt19937 gen(rd());
-    std::uniform_real_distribution<> dis(-10, 10);
+		std::random_device rd;
+		std::mt19937 gen(rd());
+		std::uniform_real_distribution<> dis(-10, 10);
 
-	for (int i = 0; i < n; i++) {
-		for (int j = 0; j < n; j++) {
-			if (i == j) {
-				A[i][j] = 1000 * dis(gen);
+		for (int i = 0; i < n; i++) {
+			for (int j = 0; j < n; j++) {
+				if (i == j) {
+					A[i][j] = 10000 * dis(gen);
+				}
+				else {
+					A[i][j] = dis(gen);
+				}
+				
+				//cout << A[i][j] << " ";
+				fout << A[i][j] << " ";
 			}
-			else {
-				A[i][j] = dis(gen);
-			}
-			
-			//cout << A[i][j] << " ";
-			fout << A[i][j] << " ";
+			//cout << endl;
+			fout<< endl;
 		}
-		//cout << endl;
-		fout<< endl;
+		
+		for (int i = 0; i < n; i++) {
+			b[i] = dis(gen)*100;
+			//cout << b[i]<<endl;
+			fout << b[i]<<" ";
+		}
+		fout << endl;
+		fout.close();
+		cout << "Generated random inputs, written to "<<wfile<<endl;
 	}
-	
-	for (int i = 0; i < n; i++) {
-		b[i] = dis(gen)*10;
-		//cout << b[i]<<endl;
-		fout << b[i]<<" ";
+	else {
+		BasicSolver::input(wfile);
+		cout << "Read benchmark file "<<wfile<<endl;
 	}
-	fout << endl;
-	fout.close();
-	cout << "generated random inputs, written to "<<wfile<<endl;
 }
 
 int main(int argc, char ** argv) {
 	int dimension = stoi(argv[1], 0, 10);
+	bool generate_random = stoi(argv[3], 0, 10);
 	//cout << dimension;
 	JacobiCpu * jacobi = new JacobiCpu(dimension);
-	jacobi->input(argv[2]);
-	double eps = stod(argv[3]);
+	jacobi->input(argv[2], generate_random);
+	double eps = stod(argv[4]);
 	jacobi->solve(eps);
-	jacobi->output(argv[4]);
+	jacobi->output(argv[5]);
 	jacobi->freeAllMemory();
 }
