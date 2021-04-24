@@ -7,8 +7,10 @@
 #include <limits.h>
 class BasicSolver {
 protected:
-	const int maxIterations = 10000;//INT_MAX;
+	const int maxIterations = 100;//INT_MAX;
 	double **A;
+	double *A_flat;
+
 	double * b;
 	double * x;
 	double * nextX;

@@ -11,6 +11,8 @@ BasicSolver::BasicSolver(int dimension) {
 
 	this->A = createMatrix<double>(size, size);
 
+	this->A_flat = createVector<double>(size*size);
+
 	this->b = createVector<double>(size);
 
 	this->x = createVector<double>(size);
@@ -55,6 +57,7 @@ void BasicSolver::freeMemory() {
 	// for (int i = 0; i < size; i++) {
 	// 	delete [] A[i];
 	// }
+	delete[] A_flat;
 	delete[]b;
 	delete[]x;
 	delete[]nextX;
