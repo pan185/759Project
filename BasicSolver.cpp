@@ -52,6 +52,27 @@ void BasicSolver::output(string wfile) {
 	fout.close();
 }
 
+void BasicSolver::computeError() {
+	double * c = createVector<double>(size);
+	double maxError = 0;
+	double total_err = 0;
+
+   for(int i = 0; i < size; i++) {
+      c[i] = 0;
+      for(int j = 0; j < size; j++)
+      {
+         c[i] += A[i][j] * x[j];
+      }
+	  maxError = fmax(maxError, fabs(c[i] - b[i]));
+	  total_err += fabs(c[i] - b[i]);
+   }
+   total_err = total_err / size;
+   cout << "\n==== max error: "<<maxError<<"\n";
+	cout << "==== avg error: "<<total_err<<"\n";
+   delete[] c;
+
+}
+
 void BasicSolver::freeMemory() {
 	freeMatrix(A, size);
 	// for (int i = 0; i < size; i++) {

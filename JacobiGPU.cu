@@ -101,10 +101,16 @@ void JacobiGPU::solve_device(double eps) {
 	// double dis = 0.0;
 	// double diff = 1.0;  
 	// int multicity = int(0.1 / eps);
+	int numTiles = (size + threads_per_tile - 1) / threads_per_tile;
+
+	cout << "Using GPU kernel "<<kernel_option<<"\n";
+	if (kernel_option == 2 || kernel_option == 3) {
+		cout << "threads per tile: "<<threads_per_tile<<"\n";
+		cout << "number of tiles: "<< numTiles <<"\n";
+	}
 
 	int numBlocks = 1;
 	int threads_per_block = size;
-
 
 	// device array allocation
     double *dA;
@@ -135,31 +141,50 @@ void JacobiGPU::solve_device(double eps) {
 	{
 		if (count % 2) {
 			// odd
-			solve1<<<numBlocks, threads_per_block>>>(dnextX, dA, db, dx, size);
+			switch(kernel_option) {
+				case 1:
+				solve1<<<numBlocks, threads_per_block>>>(dnextX, dA, db, dx, size);
+				break;
+
+				case 2:
+				solve2<<< numTiles, threads_per_tile >>>(dnextX, dA, db, dx, size);
+				break;
+
+				case 3:
+				solve3<<< numTiles, threads_per_tile, size*sizeof(double) >>>(dnextX, dA, db, dx, size);
+				break;
+
+				default:
+				solve1<<<numBlocks, threads_per_block>>>(dnextX, dA, db, dx, size);
+
+			}
+			
 		}
 		else {
 			// even
-			solve1<<<numBlocks, threads_per_block>>>(dx, dA, db, dnextX, size);
-		}
+			switch(kernel_option) {
+				case 1:
+				solve1<<<numBlocks, threads_per_block>>>(dx, dA, db, dnextX, size);
+				break;
 
-		// residual = 0.0;
-		// diff = 0.0;
-		
-		// for (int m = 0; m < size; m++)
-		// {
-		// 	dis = fabs(nextX[m] - x[m]);
-		// 	if (dis > residual)
-		// 		residual = dis;
-		// }
-		// diff = residual;
-		// if (diff < eps*multicity) {
-		// 	multicity = int(multicity / 10);
-		// }
+				case 2:
+				solve2<<< numTiles, threads_per_tile >>>(dx, dA, db, dnextX, size);
+				break;
+
+				case 3:
+				solve3<<< numTiles, threads_per_tile, size*sizeof(double) >>>(dx, dA, db, dnextX, size);
+				break;
+				
+				default:
+				solve1<<<numBlocks, threads_per_block>>>(dx, dA, db, dnextX, size);
+
+			}
+		}
 
 	}
 	cudaEventRecord(stop);
     cudaEventSynchronize(stop);
-	
+
 	cudaDeviceSynchronize();
 	cudaMemcpy(x, dx, sizeof(double) * size, cudaMemcpyDeviceToHost);
 	cudaMemcpy(nextX, dnextX, sizeof(double) * size, cudaMemcpyDeviceToHost);
@@ -235,16 +260,45 @@ void JacobiGPU::input(string wfile, bool generate) {
 	}
 }
 
+void JacobiGPU::mycomputeError() {
+	double * c = new double [size];
+	double maxError = 0;
+	double total_err = 0;
+
+   for(int i = 0; i < size; i++) {
+      c[i] = 0;
+      for(int j = 0; j < size; j++)
+      {
+         c[i] += A_flat[i*size+j] * x[j];
+      }
+	  maxError = fmax(maxError, fabs(c[i] - b[i]));
+	  total_err += fabs(c[i] - b[i]);
+   }
+   total_err = total_err / size;
+   cout << "\n==== max error: "<<maxError<<"\n";
+	cout << "==== avg error: "<<total_err<<"\n";
+   delete[] c;
+
+}
+
 int main(int argc, char ** argv) {
 	int dimension = stoi(argv[1], 0, 10);
 	bool generate_random = stoi(argv[3], 0, 10);
+	int kernel = stoi(argv[6], 0, 10);
+	int tpt = stoi(argv[7], 0, 10);
+	
 	//cout << dimension;
 	JacobiGPU * jacobi = new JacobiGPU(dimension);
 
 	jacobi->input(argv[2], generate_random);
 	double eps = stod(argv[4]);
 	//jacobi->solve_host(eps);
+	jacobi->kernel_option = kernel;
+	jacobi->threads_per_tile = tpt;
+
 	jacobi->solve(eps);
 	jacobi->output(argv[5]);
+	jacobi->mycomputeError();
 	jacobi->freeAllMemory();
+	
 }

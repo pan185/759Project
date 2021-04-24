@@ -34,19 +34,19 @@ void JacobiCpu::solve(double eps) {
     high_resolution_clock::time_point end;
     duration<double, std::milli> duration_sec;
     
-	double residual = 0.0;  //	
+	//double residual = 0.0;  //	
 	double sum = 0.0;
-	double dis = 0.0;
-	double diff = 1.0;  
-	int multicity = int(0.1 / eps);
+	//double dis = 0.0;
+	//double diff = 1.0;  
+	//int multicity = int(0.1 / eps);
 	//timer.start();
 	// Get the starting timestamp
     start = high_resolution_clock::now();
-
+	//&& (diff > eps)
 	int count = 1;
-	for (; (count < maxIterations) && (diff > eps); count++)
+	for (; (count < maxIterations) ; count++)
 	{
-		diff = 0.0;
+		//diff = 0.0;
 
 		for (int i = 0; i < size; i++)
 		{
@@ -59,27 +59,21 @@ void JacobiCpu::solve(double eps) {
 			}
 			nextX[i] = (b[i] - sum) / A[i][i];
 
-			// if (isnan(nextX[i])) {
-			// 	cout << "Not converge"<<endl;
-			// 	freeAllMemory();
-			// 	exit(EXIT_FAILURE);
-			// }
-
 			sum = 0.0;
 		}
-		residual = 0.0;
+		// residual = 0.0;
 		
-		for (int m = 0; m < size; m++)
-		{
-			dis = fabs(nextX[m] - x[m]);
-			if (dis > residual)
-				residual = dis;
-		}
-		diff = residual;
-		if (diff < eps*multicity) {
-			//cout << "======time stop:" << timer.stop() << " ";
-			multicity = int(multicity / 10);
-		}
+		// for (int m = 0; m < size; m++)
+		// {
+		// 	dis = fabs(nextX[m] - x[m]);
+		// 	if (dis > residual)
+		// 		residual = dis;
+		// }
+		// diff = residual;
+		// if (diff < eps*multicity) {
+		// 	//cout << "======time stop:" << timer.stop() << " ";
+		// 	multicity = int(multicity / 10);
+		// }
 		memcpy(x, nextX, size * sizeof(double));
 	}
 	// Get the ending timestamp
@@ -142,5 +136,6 @@ int main(int argc, char ** argv) {
 	double eps = stod(argv[4]);
 	jacobi->solve(eps);
 	jacobi->output(argv[5]);
+	jacobi->computeError();
 	jacobi->freeAllMemory();
 }

@@ -26,4 +26,4 @@ gpu:
 	nvcc JacobiGPU.cu solve_jacobi.cu BasicSolver.cpp matrix.cpp -Xcompiler -O3 -Xcompiler -Wall -Xptxas -O3 -std c++17 -o JacobiGPU
 
 gpu10: JacobiGPU
-	./JacobiGPU 1024 testbenches/test_10.txt 0 0.0000000 test.txt
+	./JacobiGPU 1024 testbenches/test_10.txt 0 0.0000000 test.txt 2 32

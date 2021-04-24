@@ -11,5 +11,9 @@ public:
     void solve_device(double eps);
     void solve(double eps);
 	void input(std::string rFile, bool generate_random);
+    void mycomputeError();
+//private:
+	int kernel_option;
+    int threads_per_tile;
 };
 #endif

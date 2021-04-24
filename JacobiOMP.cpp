@@ -36,11 +36,11 @@ void JacobiOMP::solve(double eps) {
     high_resolution_clock::time_point end;
     duration<double, std::milli> duration_sec;
     
-	double residual = 0.0;  //	
+	//double residual = 0.0;  //	
 	//double sum = 0.0;
-	double dis = 0.0;
-	double diff = 1.0;  
-	int multicity = int(0.1 / eps);
+	// double dis = 0.0;
+	// double diff = 1.0;  
+	// int multicity = int(0.1 / eps);
 	//timer.start();
 	// Get the starting timestamp
     start = high_resolution_clock::now();
@@ -48,11 +48,11 @@ void JacobiOMP::solve(double eps) {
 	int count = 1;
 	for (; (count < maxIterations); count++)
 	{
-        if ((diff <= eps)) break;
+        // if ((diff <= eps)) break;
 
-		diff = 0.0;
+		// diff = 0.0;
 
-        residual = 0.0;
+        // residual = 0.0;
 
         #pragma omp parallel for schedule(guided,8)
         //#pragma omp parallel for collapse(2) reduction(+:sum)
@@ -77,15 +77,15 @@ void JacobiOMP::solve(double eps) {
         //#pragma omp parallel for
 		//for (int m = 0; m < size; m++)
 		//{
-			dis = fabs(nextX[i] - x[i]);
-			if (dis > residual)
-				residual = dis;
+			// dis = fabs(nextX[i] - x[i]);
+			// if (dis > residual)
+			// 	residual = dis;
 		}
         
-		diff = residual;
-		if (diff < eps*multicity) {
-			multicity = int(multicity / 10);
-		}
+		// diff = residual;
+		// if (diff < eps*multicity) {
+		// 	multicity = int(multicity / 10);
+		// }
 		memcpy(x, nextX, size * sizeof(double));
 	}
 	// Get the ending timestamp
@@ -210,5 +210,6 @@ int main(int argc, char ** argv) {
 	double eps = stod(argv[4]);
 	jacobi->solve(eps, num_threads);
 	jacobi->output(argv[5]);
+	jacobi->computeError();
 	jacobi->freeAllMemory();
 }

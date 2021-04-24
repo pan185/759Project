@@ -21,5 +21,6 @@ public:
 	void input(std::string rFile);
 	void output(std::string wfile);
 	void virtual solve(double eps) = 0;
+	void computeError();
 };
 #endif
