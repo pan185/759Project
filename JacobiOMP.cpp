@@ -30,74 +30,6 @@ void JacobiOMP::solve(double eps, int num_threads) {
 
 }
 
-// void JacobiOMP::solve(double eps) {
-
-// 	high_resolution_clock::time_point start;
-//     high_resolution_clock::time_point end;
-//     duration<double, std::milli> duration_sec;
-    
-// 	double residual = 0.0;  //	
-// 	//double sum = 0.0;
-// 	double dis = 0.0;
-// 	double diff = 1.0;  
-// 	int multicity = int(0.1 / eps);
-// 	//timer.start();
-// 	// Get the starting timestamp
-//     start = high_resolution_clock::now();
-
-// 	int count = 1;
-// 	for (; (count < maxIterations); count++)
-// 	{
-//         if ((diff <= eps)) break;
-
-// 		diff = 0.0;
-
-//         residual = 0.0;
-
-//         #pragma omp parallel for schedule(guided,8)
-//         //#pragma omp parallel for collapse(2) reduction(+:sum)
-// 		for (int i = 0; i < size; i++)
-// 		{
-//             double sum = 0.0;
-//             //#pragma omp parallel for
-//             //#pragma omp parallel for reduction(+:sum)
-// 			for (int j = 0; j < size; j++)
-// 			{
-// 				//if (i != j)
-// 				//{
-// 					sum += (i != j) ? (A[i][j] * x[j]) : 0;
-// 				//}
-// 			}
-// 			nextX[i] = (b[i] - sum) / A[i][i];
-
-			
-// 		//}
-		
-		
-//         //#pragma omp parallel for
-// 		//for (int m = 0; m < size; m++)
-// 		//{
-// 			dis = fabs(nextX[i] - x[i]);
-// 			if (dis > residual)
-// 				residual = dis;
-// 		}
-        
-// 		diff = residual;
-// 		if (diff < eps*multicity) {
-// 			multicity = int(multicity / 10);
-// 		}
-// 		memcpy(x, nextX, size * sizeof(double));
-// 	}
-// 	// Get the ending timestamp
-// 	end = high_resolution_clock::now();
-// 	cout << endl << "Iterations:" << count << endl;
-	
-    
-//     // Convert the calculated duration to a double using the standard library
-//     duration_sec = std::chrono::duration_cast<duration<double, std::milli>>(end - start);
-// 	cout << duration_sec.count() << "\n";
-
-// }
 void JacobiOMP::solve(double eps) {
 
 	high_resolution_clock::time_point start;
@@ -129,15 +61,22 @@ void JacobiOMP::solve(double eps) {
             double sum = 0.0;
             //#pragma omp parallel for
             //#pragma omp parallel for reduction(+:sum)
-			for (int j = 0; j < size; j=j+4)
+			for (int j = 0; j < size; j++)
 			{
+				//if (i != j)
+				//{
 					sum += (i != j) ? (A[i][j] * x[j]) : 0;
-					sum += (i != j+1) ? (A[i][j+1] * x[j+1]) : 0;
-					sum += (i != j+2) ? (A[i][j+2] * x[j+2]) : 0;
-					sum += (i != j+3) ? (A[i][j+3] * x[j+3]) : 0;
+				//}
 			}
 			nextX[i] = (b[i] - sum) / A[i][i];
 
+			
+		//}
+		
+		
+        //#pragma omp parallel for
+		//for (int m = 0; m < size; m++)
+		//{
 			dis = fabs(nextX[i] - x[i]);
 			if (dis > residual)
 				residual = dis;
@@ -159,6 +98,67 @@ void JacobiOMP::solve(double eps) {
 	cout << duration_sec.count() << "\n";
 
 }
+// void JacobiOMP::solve(double eps) {
+
+// 	high_resolution_clock::time_point start;
+//     high_resolution_clock::time_point end;
+//     duration<double, std::milli> duration_sec;
+    
+// 	double residual = 0.0;  //	
+// 	//double sum = 0.0;
+// 	double dis = 0.0;
+// 	double diff = 1.0;  
+// 	int multicity = int(0.1 / eps);
+// 	//timer.start();
+// 	// Get the starting timestamp
+//     start = high_resolution_clock::now();
+
+// 	int count = 1;
+// 	for (; (count < maxIterations); count++)
+// 	{
+//         if ((diff <= eps)) break;
+
+// 		diff = 0.0;
+
+//         residual = 0.0;
+
+//         #pragma omp parallel for schedule(guided,8)
+//         //#pragma omp parallel for collapse(2) reduction(+:sum)
+// 		for (int i = 0; i < size; i++)
+// 		{
+//             double sum = 0.0;
+//             //#pragma omp parallel for
+//             //#pragma omp parallel for reduction(+:sum)
+// 			for (int j = 0; j < size; j=j+2)
+// 			{
+// 					sum += (i != j) ? (A[i][j] * x[j]) : 0;
+// 					sum += (i != j+1) ? (A[i][j+1] * x[j+1]) : 0;
+// 					// sum += (i != j+2) ? (A[i][j+2] * x[j+2]) : 0;
+// 					// sum += (i != j+3) ? (A[i][j+3] * x[j+3]) : 0;
+// 			}
+// 			nextX[i] = (b[i] - sum) / A[i][i];
+
+// 			dis = fabs(nextX[i] - x[i]);
+// 			if (dis > residual)
+// 				residual = dis;
+// 		}
+        
+// 		diff = residual;
+// 		if (diff < eps*multicity) {
+// 			multicity = int(multicity / 10);
+// 		}
+// 		memcpy(x, nextX, size * sizeof(double));
+// 	}
+// 	// Get the ending timestamp
+// 	end = high_resolution_clock::now();
+// 	cout << endl << "Iterations:" << count << endl;
+	
+    
+//     // Convert the calculated duration to a double using the standard library
+//     duration_sec = std::chrono::duration_cast<duration<double, std::milli>>(end - start);
+// 	cout << duration_sec.count() << "\n";
+
+// }
 
 void JacobiOMP::input(string wfile, bool generate) {
 	if (generate) {
