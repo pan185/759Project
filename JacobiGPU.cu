@@ -154,6 +154,14 @@ void JacobiGPU::solve_device(double eps) {
 				solve3<<< numTiles, threads_per_tile, size*sizeof(double) >>>(dnextX, dA, db, dx, size);
 				break;
 
+				case 4:
+				solve4<<< numTiles, threads_per_tile, size*sizeof(double) >>>(dnextX, dA, db, dx, size);
+				break;
+
+				case 5:
+				solve5<<< numTiles, threads_per_tile, size*sizeof(double) >>>(dnextX, dA, db, dx, size);
+				break;
+
 				default:
 				solve1<<<numBlocks, threads_per_block>>>(dnextX, dA, db, dx, size);
 
@@ -173,6 +181,14 @@ void JacobiGPU::solve_device(double eps) {
 
 				case 3:
 				solve3<<< numTiles, threads_per_tile, size*sizeof(double) >>>(dx, dA, db, dnextX, size);
+				break;
+
+				case 4:
+				solve4<<< numTiles, threads_per_tile, size*sizeof(double) >>>(dx, dA, db, dnextX, size);
+				break;
+
+				case 5:
+				solve5<<< numTiles, threads_per_tile, size*sizeof(double) >>>(dx, dA, db, dnextX, size);
 				break;
 				
 				default:
