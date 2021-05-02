@@ -1,0 +1,32 @@
+Read benchmark file testbenches/test_10.txt
+number of threads: 12
+
+Iterations:100
+16.4205
+
+==== max error: 0.00201416
+==== avg error: 0.000229346
+Read benchmark file testbenches/test_11.txt
+number of threads: 12
+
+Iterations:100
+53.241
+
+==== max error: 0.00299072
+==== avg error: 0.000303887
+Read benchmark file testbenches/test_12.txt
+number of threads: 12
+
+Iterations:100
+223.187
+
+==== max error: 0.00402832
+==== avg error: 0.000449935
+Read benchmark file testbenches/test_13.txt
+number of threads: 12
+
+Iterations:100
+889.061
+
+==== max error: 0.00958252
+==== avg error: 0.00071303

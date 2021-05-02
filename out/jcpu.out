@@ -1,0 +1,28 @@
+Read benchmark file testbenches/test_10.txt
+
+Iterations:100
+121.127
+
+==== max error: 0.00201416
+==== avg error: 0.000229346
+Read benchmark file testbenches/test_11.txt
+
+Iterations:100
+492.703
+
+==== max error: 0.00299072
+==== avg error: 0.000303887
+Read benchmark file testbenches/test_12.txt
+
+Iterations:100
+2106.28
+
+==== max error: 0.00402832
+==== avg error: 0.000449935
+Read benchmark file testbenches/test_13.txt
+
+Iterations:100
+8384.02
+
+==== max error: 0.00958252
+==== avg error: 0.00071303
