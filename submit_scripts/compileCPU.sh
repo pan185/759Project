@@ -5,5 +5,6 @@
 #SBATCH -o compileCPU.out -e compileCPU.err
 ##SBATCH --open-mode=append
 
-rm a.out
-g++ JacobiCpu.cpp BasicSolver.cpp matrix.cpp matrix.h -Wall -O3 -std=c++17
+rm JacobiCPU
+g++ JacobiCpu.cpp BasicSolver.cpp matrix.cpp matrix.h -Wall -O3 -std=c++17 -o JacobiCPU
+

@@ -5,5 +5,5 @@
 #SBATCH -o jcpu.out -e jcpu.err
 ##SBATCH --open-mode=append
 
-./a.out $((2**$1)) in.txt 0.0000002 test.txt
+./JacobiCPU $((2**$1)) testbenches/test_$1.txt 0 0.0000000 test.txt
 
