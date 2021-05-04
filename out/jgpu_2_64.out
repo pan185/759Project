@@ -1,0 +1,60 @@
+Read benchmark file testbenches/test_8.txt
+Using GPU kernel 2
+threads per tile: 64
+number of tiles: 4
+
+Iterations:100
+1.439712
+
+==== max error: 0.000488281
+==== avg error: 9.85973e-05
+Read benchmark file testbenches/test_9.txt
+Using GPU kernel 2
+threads per tile: 64
+number of tiles: 8
+
+Iterations:100
+2.653952
+
+==== max error: 0.0010376
+==== avg error: 0.000133842
+Read benchmark file testbenches/test_10.txt
+Using GPU kernel 2
+threads per tile: 64
+number of tiles: 16
+
+Iterations:100
+9.560576
+
+==== max error: 0.00204468
+==== avg error: 0.000230072
+Read benchmark file testbenches/test_11.txt
+Using GPU kernel 2
+threads per tile: 64
+number of tiles: 32
+
+Iterations:100
+24.810144
+
+==== max error: 0.00286865
+==== avg error: 0.000304136
+Read benchmark file testbenches/test_12.txt
+Using GPU kernel 2
+threads per tile: 64
+number of tiles: 64
+
+Iterations:100
+91.451042
+
+==== max error: 0.00408936
+==== avg error: 0.000449271
+Read benchmark file testbenches/test_13.txt
+Using GPU kernel 2
+threads per tile: 64
+number of tiles: 128
+
+Iterations:100
+629.873291
+
+==== max error: 0.00982666
+==== avg error: 0.00071224
