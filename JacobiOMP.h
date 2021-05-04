@@ -6,8 +6,8 @@ class JacobiOMP:public BasicSolver {
 public:
 	JacobiOMP(int dimension) :BasicSolver(dimension) {};
 	void freeAllMemory();
-	void solve(double eps, int num_threads);
-    void solve(double eps);
+	void solve(float eps, int num_threads);
+    void solve(float eps);
 	void input(std::string rFile, bool generate_random);
 };
 #endif

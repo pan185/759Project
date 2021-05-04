@@ -7,9 +7,9 @@ class JacobiGPU:public BasicSolver {
 public:
 	JacobiGPU(int dimension) :BasicSolver(dimension) {};
 	void freeAllMemory();
-    void solve_host(double eps);
-    void solve_device(double eps);
-    void solve(double eps);
+    void solve_host(float eps);
+    void solve_device(float eps);
+    void solve(float eps);
 	void input(std::string rFile, bool generate_random);
     void mycomputeError();
 //private:

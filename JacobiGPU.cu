@@ -25,20 +25,20 @@ void JacobiGPU::freeAllMemory() {
 	freeMemory();
 }
 
-void JacobiGPU::solve(double eps) {
+void JacobiGPU::solve(float eps) {
 	solve_device(eps);
 }
 
-void JacobiGPU::solve_host(double eps) {
+void JacobiGPU::solve_host(float eps) {
 
 	high_resolution_clock::time_point start;
     high_resolution_clock::time_point end;
     duration<double, std::milli> duration_sec;
     
-	double residual = 0.0;  //	
-	double sum = 0.0;
-	double dis = 0.0;
-	double diff = 1.0;  
+	float residual = 0.0;  //	
+	float sum = 0.0;
+	float dis = 0.0;
+	float diff = 1.0;  
 	int multicity = int(0.1 / eps);
 	//timer.start();
 	// Get the starting timestamp
@@ -81,30 +81,30 @@ void JacobiGPU::solve_host(double eps) {
 			//cout << "======time stop:" << timer.stop() << " ";
 			multicity = int(multicity / 10);
 		}
-		memcpy(x, nextX, size * sizeof(double));
+		memcpy(x, nextX, size * sizeof(float));
 	}
 	// Get the ending timestamp
 	end = high_resolution_clock::now();
 	cout << endl << "Iterations:" << count << endl;
 	
     
-    // Convert the calculated duration to a double using the standard library
-    duration_sec = std::chrono::duration_cast<duration<double, std::milli>>(end - start);
+    // Convert the calculated duration to a float using the standard library
+    duration_sec = std::chrono::duration_cast<duration<float, std::milli>>(end - start);
 	cout << duration_sec.count() << "\n";
 
 }
 
-void JacobiGPU::solve_device(double eps) {
+void JacobiGPU::solve_device(float eps) {
     
-	// double residual = 0.0; 
-	// //double sum = 0.0;
-	// double dis = 0.0;
-	// double diff = 1.0;  
+	// float residual = 0.0; 
+	// //float sum = 0.0;
+	// float dis = 0.0;
+	// float diff = 1.0;  
 	// int multicity = int(0.1 / eps);
 	int numTiles = (size + threads_per_tile - 1) / threads_per_tile;
 
 	cout << "Using GPU kernel "<<kernel_option<<"\n";
-	if (kernel_option == 2 || kernel_option == 3) {
+	if (kernel_option == 2 || kernel_option == 3 || kernel_option == 4) {
 		cout << "threads per tile: "<<threads_per_tile<<"\n";
 		cout << "number of tiles: "<< numTiles <<"\n";
 	}
@@ -113,21 +113,21 @@ void JacobiGPU::solve_device(double eps) {
 	int threads_per_block = size;
 
 	// device array allocation
-    double *dA;
-    cudaMalloc((void **)&dA, sizeof(double) * size*size);
-    double *db;
-    cudaMalloc((void **)&db, sizeof(double) * size);
-	double *dx;
-    cudaMalloc((void **)&dx, sizeof(double) * size);
-	double *dnextX;
-    cudaMalloc((void **)&dnextX, sizeof(double) * size);
+    float *dA;
+    cudaMalloc((void **)&dA, sizeof(float) * size*size);
+    float *db;
+    cudaMalloc((void **)&db, sizeof(float) * size);
+	float *dx;
+    cudaMalloc((void **)&dx, sizeof(float) * size);
+	float *dnextX;
+    cudaMalloc((void **)&dnextX, sizeof(float) * size);
 
-    cudaMemcpy(dA, A_flat, (size*size)*sizeof(double), cudaMemcpyHostToDevice);
-	cudaMemcpy(db, b, (size)*sizeof(double), cudaMemcpyHostToDevice);
-	//cudaMemcpy(dx, x, (size)*sizeof(double), cudaMemcpyHostToDevice);
-	//cudaMemcpy(dnextX, nextX, (size)*sizeof(double), cudaMemcpyHostToDevice);
-	cudaMemset(dx, 0, size*sizeof(double));
-	cudaMemset(dnextX, 0, size*sizeof(double));
+    cudaMemcpy(dA, A_flat, (size*size)*sizeof(float), cudaMemcpyHostToDevice);
+	cudaMemcpy(db, b, (size)*sizeof(float), cudaMemcpyHostToDevice);
+	//cudaMemcpy(dx, x, (size)*sizeof(float), cudaMemcpyHostToDevice);
+	//cudaMemcpy(dnextX, nextX, (size)*sizeof(float), cudaMemcpyHostToDevice);
+	cudaMemset(dx, 0, size*sizeof(float));
+	cudaMemset(dnextX, 0, size*sizeof(float));
 
 	cudaEvent_t start;
     cudaEvent_t stop;
@@ -151,15 +151,15 @@ void JacobiGPU::solve_device(double eps) {
 				break;
 
 				case 3:
-				solve3<<< numTiles, threads_per_tile, size*sizeof(double) >>>(dnextX, dA, db, dx, size);
+				solve3<<< numTiles, threads_per_tile, size*sizeof(float) >>>(dnextX, dA, db, dx, size);
 				break;
 
 				case 4:
-				solve4<<< numTiles, threads_per_tile, size*sizeof(double) >>>(dnextX, dA, db, dx, size);
+				solve4<<< numTiles, threads_per_tile, size*sizeof(float) >>>(dnextX, dA, db, dx, size);
 				break;
 
 				case 5:
-				solve5<<< numTiles, threads_per_tile, size*sizeof(double) >>>(dnextX, dA, db, dx, size);
+				solve5<<< numTiles, threads_per_tile, size*sizeof(float) >>>(dnextX, dA, db, dx, size);
 				break;
 
 				default:
@@ -180,15 +180,15 @@ void JacobiGPU::solve_device(double eps) {
 				break;
 
 				case 3:
-				solve3<<< numTiles, threads_per_tile, size*sizeof(double) >>>(dx, dA, db, dnextX, size);
+				solve3<<< numTiles, threads_per_tile, size*sizeof(float) >>>(dx, dA, db, dnextX, size);
 				break;
 
 				case 4:
-				solve4<<< numTiles, threads_per_tile, size*sizeof(double) >>>(dx, dA, db, dnextX, size);
+				solve4<<< numTiles, threads_per_tile, size*sizeof(float) >>>(dx, dA, db, dnextX, size);
 				break;
 
 				case 5:
-				solve5<<< numTiles, threads_per_tile, size*sizeof(double) >>>(dx, dA, db, dnextX, size);
+				solve5<<< numTiles, threads_per_tile, size*sizeof(float) >>>(dx, dA, db, dnextX, size);
 				break;
 				
 				default:
@@ -202,8 +202,8 @@ void JacobiGPU::solve_device(double eps) {
     cudaEventSynchronize(stop);
 
 	cudaDeviceSynchronize();
-	cudaMemcpy(x, dx, sizeof(double) * size, cudaMemcpyDeviceToHost);
-	cudaMemcpy(nextX, dnextX, sizeof(double) * size, cudaMemcpyDeviceToHost);
+	cudaMemcpy(x, dx, sizeof(float) * size, cudaMemcpyDeviceToHost);
+	cudaMemcpy(nextX, dnextX, sizeof(float) * size, cudaMemcpyDeviceToHost);
 	
 	
     // Get the elapsed time in milliseconds
@@ -277,9 +277,9 @@ void JacobiGPU::input(string wfile, bool generate) {
 }
 
 void JacobiGPU::mycomputeError() {
-	double * c = new double [size];
-	double maxError = 0;
-	double total_err = 0;
+	float * c = new float [size];
+	float maxError = 0;
+	float total_err = 0;
 
    for(int i = 0; i < size; i++) {
       c[i] = 0;
@@ -307,7 +307,7 @@ int main(int argc, char ** argv) {
 	JacobiGPU * jacobi = new JacobiGPU(dimension);
 
 	jacobi->input(argv[2], generate_random);
-	double eps = stod(argv[4]);
+	float eps = stod(argv[4]);
 	//jacobi->solve_host(eps);
 	jacobi->kernel_option = kernel;
 	jacobi->threads_per_tile = tpt;

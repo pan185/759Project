@@ -8,19 +8,19 @@
 class BasicSolver {
 protected:
 	const int maxIterations = 100;//INT_MAX;
-	double **A;
-	double *A_flat;
+	float **A;
+	float *A_flat;
 
-	double * b;
-	double * x;
-	double * nextX;
+	float * b;
+	float * x;
+	float * nextX;
 	int size;
 	void freeMemory();
 public:
 	BasicSolver(int dimension);
 	void input(std::string rFile);
 	void output(std::string wfile);
-	void virtual solve(double eps) = 0;
+	void virtual solve(float eps) = 0;
 	void computeError();
 };
 #endif

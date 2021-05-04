@@ -9,15 +9,15 @@
 BasicSolver::BasicSolver(int dimension) {
 	this->size = dimension;
 
-	this->A = createMatrix<double>(size, size);
+	this->A = createMatrix<float>(size, size);
 
-	this->A_flat = createVector<double>(size*size);
+	this->A_flat = createVector<float>(size*size);
 
-	this->b = createVector<double>(size);
+	this->b = createVector<float>(size);
 
-	this->x = createVector<double>(size);
+	this->x = createVector<float>(size);
 
-	this->nextX = createVector<double>(size);
+	this->nextX = createVector<float>(size);
 
 	for (int i = 0; i < size; i++) {
 		x[i] = 0;
@@ -53,9 +53,9 @@ void BasicSolver::output(string wfile) {
 }
 
 void BasicSolver::computeError() {
-	double * c = createVector<double>(size);
-	double maxError = 0;
-	double total_err = 0;
+	float * c = createVector<float>(size);
+	float maxError = 0;
+	float total_err = 0;
 
    for(int i = 0; i < size; i++) {
       c[i] = 0;

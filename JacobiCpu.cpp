@@ -25,25 +25,25 @@ using namespace std;
 void JacobiCpu::freeAllMemory() {
 	freeMemory();
 }
-void JacobiCpu::solve(double eps) {
+void JacobiCpu::solve(float eps) {
 
 	// CpuTimer timer = CpuTimer();
 	// timer.start();
 
 	high_resolution_clock::time_point start;
     high_resolution_clock::time_point end;
-    duration<double, std::milli> duration_sec;
+    duration<float, std::milli> duration_sec;
     
-	//double residual = 0.0;  //	
-	double sum = 0.0;
-	//double dis = 0.0;
-	//double diff = 1.0;  
+	//float residual = 0.0;  //	
+	float sum = 0.0;
+	//float dis = 0.0;
+	//float diff = 1.0;  
 	//int multicity = int(0.1 / eps);
 	//timer.start();
 	// Get the starting timestamp
     start = high_resolution_clock::now();
 	//&& (diff > eps)
-	int count = 1;
+	int count = 0;
 	for (; (count < maxIterations) ; count++)
 	{
 		//diff = 0.0;
@@ -74,15 +74,15 @@ void JacobiCpu::solve(double eps) {
 		// 	//cout << "======time stop:" << timer.stop() << " ";
 		// 	multicity = int(multicity / 10);
 		// }
-		memcpy(x, nextX, size * sizeof(double));
+		memcpy(x, nextX, size * sizeof(float));
 	}
 	// Get the ending timestamp
 	end = high_resolution_clock::now();
 	cout << endl << "Iterations:" << count << endl;
 	
     
-    // Convert the calculated duration to a double using the standard library
-    duration_sec = std::chrono::duration_cast<duration<double, std::milli>>(end - start);
+    // Convert the calculated duration to a float using the standard library
+    duration_sec = std::chrono::duration_cast<duration<float, std::milli>>(end - start);
 	cout << duration_sec.count() << "\n";
 
 }
@@ -133,7 +133,7 @@ int main(int argc, char ** argv) {
 	//cout << dimension;
 	JacobiCpu * jacobi = new JacobiCpu(dimension);
 	jacobi->input(argv[2], generate_random);
-	double eps = stod(argv[4]);
+	float eps = stod(argv[4]);
 	jacobi->solve(eps);
 	jacobi->output(argv[5]);
 	jacobi->computeError();

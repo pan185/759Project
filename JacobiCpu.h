@@ -9,7 +9,7 @@ class JacobiCpu:public BasicSolver {
 public:
 	JacobiCpu(int dimension) :BasicSolver(dimension) {};
 	void freeAllMemory();
-	void solve(double eps);
+	void solve(float eps);
 	void input(std::string rFile, bool generate_random);
 };
 #endif
