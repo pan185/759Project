@@ -5,8 +5,8 @@
 #SBATCH -o compileAll.out -e compileAll.err
 ##SBATCH --open-mode=append
 
-sbatch compileCPU.sh
-sbatch compileGPU.sh
-sbatch compileOMP.sh
-sbatch compileThrust.sh
+sbatch submit_scripts/compileCPU.sh
+sbatch submit_scripts/compileGPU.sh
+sbatch submit_scripts/compileOMP.sh
+sbatch submit_scripts/compileThrust.sh
 

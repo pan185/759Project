@@ -9,14 +9,14 @@
 rm -rf out
 mkdir out
 
-sbatch jcpu.sh
+sbatch submit_scripts/jcpu.sh
 
-sbatch jomp.sh 12
+sbatch submit_scripts/jomp.sh 12
 #subtitute 12 with desirable number of threads
 
-sbatch jgpu.sh 2 64
-sbatch jgpu.sh 3 64
+sbatch submit_scripts/jgpu.sh 2 64
+sbatch submit_scripts/jgpu.sh 3 64
 
-sbatch jthrust.sh
+sbatch submit_scripts/jthrust.sh
 
 
