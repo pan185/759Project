@@ -6,5 +6,5 @@
 ##SBATCH --open-mode=append
 
 rm JacobiCPU
-g++ JacobiCpu.cpp BasicSolver.cpp matrix.cpp matrix.h -Wall -O3 -std=c++17 -o JacobiCPU
+g++ JacobiCpu.cpp BasicSolver.cpp -Wall -O3 -std=c++17 -o JacobiCPU
 

@@ -6,5 +6,5 @@
 ##SBATCH --open-mode=append
 
 rm JacobiOMP
-g++ JacobiOMP.cpp BasicSolver.cpp matrix.cpp -Wall -O3 -std=c++17 -o JacobiOMP -fopenmp
+g++ JacobiOMP.cpp BasicSolver.cpp -Wall -O3 -std=c++17 -o JacobiOMP -fopenmp
 
