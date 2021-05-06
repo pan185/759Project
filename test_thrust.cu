@@ -112,7 +112,8 @@ typedef thrust::transform_iterator<dmF, countIt> diagIt;
 
 
 void solve(thrust::device_vector<float>& dx, thrust::device_vector<float>& dA, thrust::device_vector<float>& db,
-    thrust::device_vector<float>& dnextX, int size)
+    thrust::device_vector<float>& dnextX, int size, thrust::device_vector<float>& temp, thrust::device_vector<int>&outkey,
+    thrust::device_vector<float>&sum)
 {
     // std::cout <<"dA= ";
     // for (int i = 0; i<size*size; i++) {
@@ -134,7 +135,7 @@ void solve(thrust::device_vector<float>& dx, thrust::device_vector<float>& dA, t
     // diagIt dg_begin = thrust::make_transform_iterator(thrust::make_counting_iterator(0),diag_index(size));
     // diagIt dg_end   = dg_begin + (size*size);
 
-    thrust::device_vector<float> temp(size*size);
+    //thrust::device_vector<float> temp(size*size);
     thrust::transform(make_zip_iterator(
                         make_tuple(
                             dA.begin(),
@@ -146,8 +147,8 @@ void solve(thrust::device_vector<float>& dx, thrust::device_vector<float>& dA, t
                         temp.begin(),
                         f_mult());
 
-    thrust::device_vector<int> outkey(size);
-    thrust::device_vector<float> sum(size);
+    // thrust::device_vector<int> outkey(size);
+    // thrust::device_vector<float> sum(size);
     thrust::reduce_by_key(cv_begin, cv_end, temp.begin(), outkey.begin(), sum.begin());
     //   thrust::transform(v.begin(), v.end(), sum.begin(), v.begin(), thrust::plus<float>());
 
@@ -245,6 +246,11 @@ int main(int argc, char ** argv) {
   thrust::device_vector<float> dx(size);
   thrust::device_vector<float> db(size);
   thrust::device_vector<float> dnextX(size);
+  
+  thrust::device_vector<float> temp(size*size);
+  thrust::device_vector<int> outkey(size);
+  thrust::device_vector<float> sum(size);
+
   //thrust::fill(dA.begin(), dA.end(), A_flat);
   //thrust::copy(dA.begin(), dA.end(), A_flat);
   dA = A_flat;
@@ -264,11 +270,11 @@ int main(int argc, char ** argv) {
 	{
     if (count % 2) {
 			// odd
-      solve(dnextX, dA, db, dx, size);
+      solve(dnextX, dA, db, dx, size, temp, outkey, sum);
     }
     else {
       // even
-      solve(dx, dA, db, dnextX, size);
+      solve(dx, dA, db, dnextX, size, temp, outkey, sum);
     }
   }
 

@@ -54,18 +54,21 @@ void JacobiOMP::solve(float eps) {
 
         // residual = 0.0;
 
-        #pragma omp parallel for schedule(guided,8)
+        #pragma omp parallel for schedule (dynamic,8)
         //#pragma omp parallel for collapse(2) reduction(+:sum)
 		for (int i = 0; i < size; i++)
 		{
             float sum = 0.0;
             //#pragma omp parallel for
             //#pragma omp parallel for reduction(+:sum)
-			for (int j = 0; j < size; j++)
+			for (int j = 0; j < size; j = j+1)
 			{
 				//if (i != j)
 				//{
 					sum += (i != j) ? (A[i][j] * x[j]) : 0;
+					// sum += (i != j+1) ? (A[i][j+1] * x[j+1]) : 0;
+					// sum += (i != j+2) ? (A[i][j+2] * x[j+2]) : 0;
+					// sum += (i != j+3) ? (A[i][j+3] * x[j+3]) : 0;
 				//}
 			}
 			nextX[i] = (b[i] - sum) / A[i][i];
