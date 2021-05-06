@@ -1,0 +1,48 @@
+Read benchmark file testbenches/test_8.txt
+Using GPU kernel 1
+
+Iterations:100
+2.711456
+
+==== max error: 0.000488281
+==== avg error: 9.85973e-05
+Read benchmark file testbenches/test_9.txt
+Using GPU kernel 1
+
+Iterations:100
+16.258881
+
+==== max error: 0.0010376
+==== avg error: 0.000133842
+Read benchmark file testbenches/test_10.txt
+Using GPU kernel 1
+
+Iterations:100
+67.495682
+
+==== max error: 0.00204468
+==== avg error: 0.000230072
+Read benchmark file testbenches/test_11.txt
+Using GPU kernel 1
+
+Iterations:100
+0.315232
+
+==== max error: 999.662
+==== avg error: 499.353
+Read benchmark file testbenches/test_12.txt
+Using GPU kernel 1
+
+Iterations:100
+0.296128
+
+==== max error: 999.983
+==== avg error: 499.582
+Read benchmark file testbenches/test_13.txt
+Using GPU kernel 1
+
+Iterations:100
+0.305216
+
+==== max error: 999.879
+==== avg error: 496.935

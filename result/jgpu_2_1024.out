@@ -1,60 +1,60 @@
 Read benchmark file testbenches/test_8.txt
 Using GPU kernel 2
-threads per tile: 256
+threads per tile: 1024
 number of tiles: 1
 
 Iterations:100
-2.418912
+9.365696
 
-==== max error: 0.000488281
-==== avg error: 9.85973e-05
+==== max error: 0
+==== avg error: nan
 Read benchmark file testbenches/test_9.txt
 Using GPU kernel 2
-threads per tile: 256
-number of tiles: 2
+threads per tile: 1024
+number of tiles: 1
 
 Iterations:100
-8.092288
+0.000000
 
-==== max error: 0.0010376
-==== avg error: 0.000133842
+==== max error: 998.541
+==== avg error: 488.635
 Read benchmark file testbenches/test_10.txt
 Using GPU kernel 2
-threads per tile: 256
-number of tiles: 4
+threads per tile: 1024
+number of tiles: 1
 
 Iterations:100
-17.973312
+67.574081
 
 ==== max error: 0.00204468
 ==== avg error: 0.000230072
 Read benchmark file testbenches/test_11.txt
 Using GPU kernel 2
-threads per tile: 256
-number of tiles: 8
+threads per tile: 1024
+number of tiles: 2
 
 Iterations:100
-35.250431
+124.985214
 
 ==== max error: 0.00286865
 ==== avg error: 0.000304136
 Read benchmark file testbenches/test_12.txt
 Using GPU kernel 2
-threads per tile: 256
-number of tiles: 16
+threads per tile: 1024
+number of tiles: 4
 
 Iterations:100
-93.993698
+238.717606
 
 ==== max error: 0.00408936
 ==== avg error: 0.000449271
 Read benchmark file testbenches/test_13.txt
 Using GPU kernel 2
-threads per tile: 256
-number of tiles: 32
+threads per tile: 1024
+number of tiles: 8
 
 Iterations:100
-617.150146
+641.170166
 
 ==== max error: 0.00982666
 ==== avg error: 0.00071224

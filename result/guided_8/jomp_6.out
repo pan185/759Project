@@ -1,0 +1,48 @@
+Read benchmark file testbenches/test_8.txt
+number of threads: 6
+
+Iterations:100
+2.79559
+
+==== max error: 0.000488281
+==== avg error: 9.82136e-05
+Read benchmark file testbenches/test_9.txt
+number of threads: 6
+
+Iterations:100
+7.2223
+
+==== max error: 0.0010376
+==== avg error: 0.000133716
+Read benchmark file testbenches/test_10.txt
+number of threads: 6
+
+Iterations:100
+21.1258
+
+==== max error: 0.00201416
+==== avg error: 0.000229346
+Read benchmark file testbenches/test_11.txt
+number of threads: 6
+
+Iterations:100
+82.6831
+
+==== max error: 0.00299072
+==== avg error: 0.000303887
+Read benchmark file testbenches/test_12.txt
+number of threads: 6
+
+Iterations:100
+360.807
+
+==== max error: 0.00402832
+==== avg error: 0.000449935
+Read benchmark file testbenches/test_13.txt
+number of threads: 6
+
+Iterations:100
+1451.42
+
+==== max error: 0.00958252
+==== avg error: 0.00071303
